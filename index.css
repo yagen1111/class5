@@ -1,0 +1,519 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #f5d142;
+    --secondary-color: #d4a017;
+    --accent-color: #f8e38e; 
+    --background-color: #ffffff;
+    --text-color: #333333;
+}
+.mybox{
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    width: 100px;
+    height: 100px;
+}
+body {
+    font-family:  sans-serif;
+}
+
+.container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+}
+
+a {
+    color: var(--primary-color);
+}
+
+a:hover {
+    color: var(--secondary-color);
+}
+
+img {
+    width: 80%;
+    height: 80%;
+    display: block;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 50px;
+    color: var(--primary-color);
+}
+
+header {
+    background-color: var(--background-color);
+    box-shadow: 0 10px 20px ;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 15px 0;
+    background-color: #333333;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo h1 {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 0;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+nav ul li:last-child {
+    margin-right: 0;
+}
+
+nav ul li a {
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 10px 0;
+    position: relative;
+    color: var(--primary-color);
+}
+
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+nav ul li a:hover::after {
+    width: 100%;
+}
+
+.mobile-menu-btn {
+    display: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: var(--primary-color);
+}
+
+/* חלק אודות (About) */
+.about-content {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.about-text {
+    flex: 1;
+}
+
+.about-image {
+    flex: 1;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+/* חלק שירותים (Services) */
+.services-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+.sep{
+    height: 70px;
+    width: 100%;
+}
+.service-card {
+
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 50px 15px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    transition: transform 0.7s ease, box-shadow 0.7s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.service-card img {
+    margin-bottom: 20px;
+}
+
+.service-card h3 {
+    font-size: 1.5rem;
+}
+
+.service-card .price {
+    display: block;
+    margin-top: 15px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* חלק אקורדיון (FAQ) */
+.accordion {
+    margin-top: 30px;
+}
+
+.accordion-item {
+    border: 1px solid #e6e6e6;
+    border-radius: var(--border-radius);
+    margin-bottom: 15px;
+
+}
+
+.accordion-header {
+    background-color: #f9f9f9;
+    padding: 15px 20px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.accordion-content {
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.accordion-item.active .accordion-content {
+    padding: 20px;
+    max-height: 500px;
+}
+
+/* חלק קרוסלה (Carousel) */
+/* עדכון סגנונות הקרוסלה לשמירה על תמונות מרובעות */
+/* עדכון סגנונות הקרוסלה לתמונות בגדלים שונים */
+.carousel {
+    position: relative;
+    margin: 30px auto;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    /* הגדרת גודל קבוע אחיד */
+    width: 500px;
+    height: 500px;
+    max-width: 100%;
+    background-color: #f8f8f8;
+}
+
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.carousel-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-slide.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+/* מרכוז התמונות והגדרת גודל קבוע */
+.carousel-slide img {
+    max-width: 90%;
+    max-height: 90%;
+    width: auto;
+    height: auto;
+    object-fit: contain; /* שומר על יחס הגובה-רוחב המקורי */
+    border: 1px solid #eee;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    background-color: white;
+    padding: 10px;
+}
+
+/* עיצוב לכפתורי ניווט */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(245, 209, 66, 0.8); /* שימוש בצבע הראשי עם שקיפות */
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.carousel-btn:hover {
+    background-color: var(--primary-color);
+}
+
+.carousel-btn.prev {
+    right: 20px;
+}
+
+.carousel-btn.next {
+    left: 20px;
+}
+
+/* עיצוב לנקודות אינדיקציה */
+.carousel-indicators {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid var(--primary-color);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.indicator.active {
+    background-color: var(--primary-color);
+}
+
+/* התאמה למסכים קטנים */
+@media (max-width: 576px) {
+    .carousel {
+        width: 300px;
+        height: 300px;
+    }
+}
+
+/* חלק מפה (Google Maps) */
+.map-container {
+    margin-top: 30px;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* חלק צור קשר (Contact) */
+.contact-container {
+    display: flex;
+    gap: 50px;
+    margin-top: 30px;
+}
+
+.contact-info, .contact-form {
+    flex: 1;
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.info-item i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-left: 15px;
+    margin-top: 5px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #e6e6e6;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.submit-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: var(--secondary-color);
+}
+
+/* חלק תחתון (Footer) */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 60px 0 20px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.footer-logo h3 {
+    color: white;
+    font-size: 1.8rem;
+}
+
+.footer-links ul {
+    list-style: none;
+}
+
+.footer-links ul li {
+    margin-bottom: 10px;
+}
+
+.footer-links ul li a {
+    color: #e6e6e6;
+}
+
+.footer-links ul li a:hover {
+    color: var(--accent-color);
+}
+
+.footer-social h4,
+.footer-links h4,
+.footer-contact h4 {
+    color: white;
+    margin-bottom: 20px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.social-icons a {
+    color: white;
+    font-size: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+    color: var(--accent-color);
+}
+
+.footer-contact p {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.footer-contact p i {
+    margin-left: 10px;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* רספונסיביות */
+@media (max-width: 992px) {
+    .about-content {
+        flex-direction: column;
+    }
+    
+    .contact-container {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-btn {
+        display: block;
+    }
+    
+    nav {
+        position: fixed;
+        top: 70px;
+        right: -100%;
+        width: 80%;
+        height: calc(100vh - 70px);
+        background-color: white;
+        transition: right 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    nav.active {
+        right: 0;
+    }
+    
+    nav ul {
+        flex-direction: column;
+        padding: 30px;
+    }
+    
+    nav ul li {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .section-title {
+        font-size: 2rem;
+    }
+}
