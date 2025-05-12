@@ -29,6 +29,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-and-push  # מבטיח שרק אחרי שהדוקר מצליח, ה-Deploy יתחיל
     steps:
+      
+    
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -43,3 +45,19 @@ jobs:
 
       - name: Apply Terraform configuration
         run: terraform apply -auto-approve
+
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1  # שנה לאזור שלך
+
+      - name: Initialize Terraform
+        run: terraform init
+
+      - name: Apply Terraform Configuration
+        run: terraform apply -auto-approve
+
+        
