@@ -79,10 +79,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Stop ECS Service
-        run: aws ecs update-service --cluster my-app-cluster  --desired-count 0
-
-
       - name: Initialize Terraform
         run: terraform init -upgrade
 
