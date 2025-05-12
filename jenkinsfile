@@ -1,0 +1,79 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE = 'yagen1111/myapp:latest'
+        DOCKER_CREDENTIALS_ID = 'dockerhub-creds' // תגדיר את זה בג'נקינס
+        RECIPIENT_EMAIL = 'Yagen1111@gmail.com'
+        APP_PORT = '8080' // תעדכן לפי הצורך
+        PROD_SERVER = 'user@prod-server-ip' // תעדכן לפי השרת שלך
+        DEPLOY_SCRIPT = '/home/user/deploy.sh' // תעדכן לפי הסקריפט שלך בשרת
+    }
+
+    stages {
+        stage('Checkout from GitHub') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Syntax Check') {
+            steps {
+                sh 'python3 -m py_compile app.py' // לדוגמה, אפשר לשנות בהתאם לטכנולוגיה
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh "docker build -t ${DOCKER_IMAGE} ."
+            }
+        }
+
+        stage('Run Locally') {
+            steps {
+                sh "docker run -d -p ${APP_PORT}:${APP_PORT} --name test_app ${DOCKER_IMAGE}"
+            }
+        }
+
+        stage('Health Check') {
+            steps {
+                script {
+                    sleep 5 // המתנה שהאפליקציה תעלה
+                    def status = sh(script: "curl -s -o /dev/null -w '%{http_code}' http://localhost:${APP_PORT}", returnStdout: true).trim()
+                    if (status != '200') {
+                        error "Health check failed with status: ${status}"
+                    }
+                }
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh """
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push ${DOCKER_IMAGE}
+                    """
+                }
+            }
+        }
+
+        stage('Deploy to Production') {
+            steps {
+                sh "ssh ${PROD_SERVER} '${DEPLOY_SCRIPT} ${DOCKER_IMAGE}'"
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Cleaning up...'
+            sh 'docker rm -f test_app || true'
+            sh 'docker rmi ${DOCKER_IMAGE} || true'
+
+            mail to: "${RECIPIENT_EMAIL}",
+                 subject: "Jenkins Pipeline Notification",
+                 body: "The pipeline has completed. Check Jenkins for more details."
+        }
+    }
+}
