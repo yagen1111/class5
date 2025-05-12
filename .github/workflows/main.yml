@@ -50,7 +50,7 @@ jobs:
           aws-region: us-east-1  # שנה לאזור שלך
 
       - name: Initialize Terraform
-        run: terraform init -upgarde
+        run: terraform init -upgrade
 
       - name: Apply Terraform Configuration
         run: terraform apply -auto-approve
